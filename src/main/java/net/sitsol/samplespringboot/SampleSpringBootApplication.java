@@ -1,17 +1,15 @@
 package net.sitsol.samplespringboot;
 
+import lombok.extern.slf4j.Slf4j;
 import net.sitsol.samplespringboot.service.SampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
 
 @SpringBootApplication
+@Slf4j
 @Profile("!test")
 public class SampleSpringBootApplication implements CommandLineRunner {
 
@@ -25,12 +23,12 @@ public class SampleSpringBootApplication implements CommandLineRunner {
 	@Override
 	public void run(String ... args) {
 
-		System.out.println("spring-bootコマンド処理本体-開始");
+		log.info("spring-bootコマンド処理本体-開始");
 
 		// サンプルサービス実行
 		sampleService.execSample();
 
-		System.out.println("spring-bootコマンド処理本体-終了");
+		log.info("spring-bootコマンド処理本体-終了");
 	}
 
 }
