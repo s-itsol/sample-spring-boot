@@ -1,22 +1,20 @@
 package net.sitsol.samplespringboot;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import net.sitsol.samplespringboot.service.SampleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
 
 @SpringBootApplication
+@RequiredArgsConstructor
 @Profile("!test")
 public class SampleSpringBootApplication implements CommandLineRunner {
 
-	@Autowired
-	SampleService sampleService;
+	@NonNull
+	private final SampleService sampleService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SampleSpringBootApplication.class, args);
