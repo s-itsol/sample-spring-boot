@@ -1,0 +1,18 @@
+<!--
+	=======================================================================
+	ログ設定
+	=======================================================================
+-->
+<configuration>
+	
+	<!-- デフォルト設定を読込み(＝上書きしない設定はspring-bootのデフォルト設定を使う) -->
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	
+	<!-- ログ出力先ファイルパス -->
+	<property name="LOG_FILE_DIR"		value="${HOME}/logs/app/"/>
+	<property name="LOG_FILE_NAME"		value="sample-spring-boot.log"/>
+	
+	<!-- 推奨デフォルト設定を読込み ※同一クラスパスにある想定 -->
+	<include resource="app-defaults.xml" />
+	
+</configuration>

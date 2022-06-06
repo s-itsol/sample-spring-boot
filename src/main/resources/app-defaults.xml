@@ -1,0 +1,131 @@
+<!--
+	=======================================================================
+	推奨デフォルト設定
+	=======================================================================
+	
+	＜外部プロパティ＞
+	PID				プロセスID ※spring-bootにて自動設定される
+	LOG_FILE_DIR	ログファイル出力先ディレクトリ
+	LOG_FILE_NAME	ログファイル名
+	
+	＜ログ設計ポリシーの補足＞
+	・rollingPolicy：ファイルサイズは問わず、日付でのローテートのみ。(わずか1日で肥大化するアプリログは、根本的なログ設計の見直し要…という想定)
+	・fileNamePattern：圧縮は「.zip」としている。
+	・maxHistory「10日分」には、特にこだわりは無い。
+	
+	=======================================================================
+-->
+<included>
+	
+	<!-- ログ書式パターン
+		MDCキー
+		・userId	ユーザーID ※各スレッド毎にログインユーザーID／バッチジョブIDを設定する想定
+	-->
+	<property name="LOG_PATTERN"
+				value="[%date{yyyy-MM-dd HH:mm:ss.SSS}],[%-5level],[${PID:- }],[%-20thread] %message --- USER-ID:[%X{userId}],%logger{40}:%line%n"
+	/>
+	
+	<!-- ログ出力先ファイルパス -->
+	<property name="LOG_FILE_PATH"						value="${LOG_FILE_DIR}${LOG_FILE_NAME}" />
+	<property name="LOG_WARN_FILE_PATH"					value="${LOG_FILE_DIR}warn_${LOG_FILE_NAME}" />
+	<property name="LOG_ERROR_FILE_PATH"				value="${LOG_FILE_DIR}error_${LOG_FILE_NAME}" />
+	
+	<!-- 圧縮ファイル名パターン -->
+	<property name="COMPRESS_FILE_NAME_PATTERN"			value="${LOG_FILE_PATH}-%d{yyyy-MM-dd}.zip" />
+	<property name="COMPRESS_WARN_FILE_NAME_PATTERN"	value="${LOG_WARN_FILE_PATH}-%d{yyyy-MM-dd}.zip" />
+	<property name="COMPRESS_ERROR_FILE_NAME_PATTERN"	value="${LOG_ERROR_FILE_PATH}-%d{yyyy-MM-dd}.zip" />
+	
+	<!-- 最大保持世代数 -->
+	<property name="MAX_HISTORY"						value="10" />
+	
+	
+	<!-- コンソールログ用アペンダ設定 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		
+		<!-- エンコーダ -->
+		<encoder>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+		
+	</appender>
+	
+	<!-- 全体用ファイルアペンダ -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		
+		<!-- エンコーダ -->
+		<encoder>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+		
+		<!-- ログ出力先ファイルパス -->
+		<file>${LOG_FILE_PATH}</file>
+		
+		<!-- ローリングポリシー -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${COMPRESS_FILE_NAME_PATTERN}</fileNamePattern>
+			<maxHistory>${MAX_HISTORY}</maxHistory>
+		</rollingPolicy>
+		
+	</appender>
+	
+	<!-- 警告ログ用ファイルアペンダ -->
+	<appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		
+		<!-- フィルタ ※指定レベルログのみ出力 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		
+		<!-- エンコーダ -->
+		<encoder>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+		
+		<!-- ログ出力先ファイルパス -->
+		<file>${LOG_WARN_FILE_PATH}</file>
+		
+		<!-- ローリングポリシー -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${COMPRESS_WARN_FILE_NAME_PATTERN}</fileNamePattern>
+			<maxHistory>${MAX_HISTORY}</maxHistory>
+		</rollingPolicy>
+		
+	</appender>
+	
+	<!-- エラーログ用ファイルアペンダ -->
+	<appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		
+		<!-- フィルタ ※指定レベルログのみ出力 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		
+		<!-- エンコーダ -->
+		<encoder>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+		
+		<!-- ログ出力先ファイルパス -->
+		<file>${LOG_ERROR_FILE_PATH}</file>
+		
+		<!-- ローリングポリシー -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${COMPRESS_ERROR_FILE_NAME_PATTERN}</fileNamePattern>
+			<maxHistory>${MAX_HISTORY}</maxHistory>
+		</rollingPolicy>
+		
+	</appender>
+	
+	<!-- アペンダ別-出力ログレベル -->
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />		<!-- コンソール出力 -->
+		<appender-ref ref="FILE" />			<!-- 全体用ファイル出力 -->
+		<appender-ref ref="WARN_FILE" />	<!-- 警告ログ用ファイル出力 -->
+		<appender-ref ref="ERROR_FILE" />	<!-- エラーログ用ファイル出力 -->
+	</root>
+	
+</included>
