@@ -10,6 +10,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Profile;
 
+/**
+ * サンプルspringーbootアプリケーション
+ */
 @SpringBootApplication
 @Slf4j
 @RequiredArgsConstructor
@@ -21,6 +24,10 @@ public class SampleSpringBootApplication implements CommandLineRunner {
 
 	public static final String MDC_KEY_USER_ID = "userId";
 
+	/**
+	 * メインエントリポイント
+	 * @param args メインメソッド引数文字列群
+	 */
 	public static void main(String[] args) {
 		try {
 			// ログ用MDCキー値の設定
@@ -35,6 +42,10 @@ public class SampleSpringBootApplication implements CommandLineRunner {
 		}
 	}
 
+	/**
+	 * 実行コールバック処理
+	 * @param args メインメソッド引数文字列群
+	 */
 	@Override
 	public void run(String ... args) {
 
