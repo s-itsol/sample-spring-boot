@@ -3,6 +3,7 @@ package net.sitsol.samplespringboot;
 import lombok.extern.slf4j.Slf4j;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import net.sitsol.samplespringboot.service.QiitaService;
 import net.sitsol.samplespringboot.service.SampleService;
 import org.slf4j.MDC;
 import org.springframework.boot.CommandLineRunner;
@@ -18,6 +19,9 @@ public class SampleSpringBootApplication implements CommandLineRunner {
 
 	@NonNull
 	private final SampleService sampleService;
+
+	@NonNull
+	private final QiitaService qiitaService;
 
 	public static final String MDC_KEY_USER_ID = "userId";
 
@@ -42,6 +46,9 @@ public class SampleSpringBootApplication implements CommandLineRunner {
 
 		// サンプルサービス実行
 		sampleService.execSample();
+
+		String responseText = qiitaService.getQiitaApiSchema();
+		log.info("キータAPIスキーマ：[" + responseText  + "]");
 
 		log.info("spring-bootコマンド処理本体-終了");
 
