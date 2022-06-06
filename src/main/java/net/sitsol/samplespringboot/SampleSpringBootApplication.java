@@ -1,9 +1,10 @@
 package net.sitsol.samplespringboot;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import net.sitsol.samplespringboot.service.SampleService;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,11 +12,12 @@ import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
 @Slf4j
+@RequiredArgsConstructor
 @Profile("!test")
 public class SampleSpringBootApplication implements CommandLineRunner {
 
-	@Autowired
-	SampleService sampleService;
+	@NonNull
+	private final SampleService sampleService;
 
 	public static final String MDC_KEY_USER_ID = "userId";
 
