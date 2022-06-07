@@ -47,8 +47,10 @@ public class SampleSpringBootApplication implements CommandLineRunner {
 		// サンプルサービス実行
 		sampleService.execSample();
 
-		String responseText = qiitaService.getQiitaApiSchema();
-		log.info("キータAPIスキーマ：[" + responseText  + "]");
+		// 呼出確認
+		qiitaService.callSample();
+
+		qiitaService.getQiitaApiSchema();
 
 		log.info("spring-bootコマンド処理本体-終了");
 
