@@ -19,17 +19,29 @@ repositories {
 }
 
 dependencies {
+	// ※ここは順番に並べないと、競合が起きた際の解消が面倒になりそうなので、しっかり並べること。
 
+	// アノテーション-プロセッサ
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// コンパイル-オンリー
+	compileOnly 'org.projectlombok:lombok'
+
+	// デベロップメント-オンリー
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// インプリメンテーション
 	implementation 'com.fasterxml.jackson.core:jackson-annotations'
 	implementation 'com.fasterxml.jackson.core:jackson-core'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
-//	implementation 'org.springframework.boot:spring-boot-starter-web'	//※tomcatを起動するときはこちら
+	implementation 'org.apache.commons:commons-lang3'
 	implementation 'org.springframework.boot:spring-boot-starter'
+//	implementation 'org.springframework.boot:spring-boot-starter-web'	//※tomcatを起動するときはこちら
 	implementation 'org.springframework:spring-web'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
+
+	// テスト-インプリメンテーション
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 tasks.named('test') {
